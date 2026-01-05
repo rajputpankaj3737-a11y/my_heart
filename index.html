@@ -1,0 +1,898 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emotional Crossroads | A Reflective Journey</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Crimson+Text:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-dark: #0c0c14;
+            --secondary-dark: #151522;
+            --accent-pink: #d87a95;
+            --accent-purple: #7a5fd8;
+            --accent-blue: #5a8fd8;
+            --text-primary: #f0f0f8;
+            --text-secondary: #b0b0c8;
+            --text-muted: #8888a8;
+            --transition-slow: 0.6s cubic-bezier(0.22, 0.61, 0.36, 1);
+            --transition-medium: 0.4s ease;
+            --transition-fast: 0.2s ease;
+            --border-radius: 12px;
+            --shadow-soft: 0 10px 30px rgba(0, 0, 0, 0.25);
+            --shadow-hard: 0 5px 15px rgba(0, 0, 0, 0.4);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--primary-dark);
+            color: var(--text-primary);
+            line-height: 1.7;
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(ellipse at 20% 20%, rgba(120, 90, 216, 0.05) 0%, transparent 40%),
+                radial-gradient(ellipse at 80% 80%, rgba(216, 122, 149, 0.05) 0%, transparent 40%);
+            min-height: 100vh;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--secondary-dark);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(to bottom, var(--accent-pink), var(--accent-purple));
+            border-radius: 4px;
+        }
+
+        /* Loading Screen */
+        .loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--primary-dark);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            z-index: 10000;
+            transition: opacity 1s ease, visibility 1s ease;
+        }
+
+        .loading-screen.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .loading-heart {
+            font-size: 3rem;
+            color: var(--accent-pink);
+            margin-bottom: 2rem;
+            animation: heartbeat 1.5s infinite ease-in-out;
+        }
+
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .loading-text {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            font-weight: 300;
+        }
+
+        /* Navigation */
+        .main-nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 1.5rem 0;
+            z-index: 1000;
+            background-color: rgba(12, 12, 20, 0.85);
+            backdrop-filter: blur(15px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            transition: transform 0.5s ease, padding 0.3s ease;
+        }
+
+        .main-nav.hidden {
+            transform: translateY(-100%);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'Crimson Text', serif;
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            position: relative;
+            padding-bottom: 5px;
+        }
+
+        .logo::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 30px;
+            height: 2px;
+            background: linear-gradient(to right, var(--accent-pink), var(--accent-purple));
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+        }
+
+        .nav-link {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 1rem;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            position: relative;
+            padding: 0.5rem 0;
+            transition: color 0.3s ease;
+        }
+
+        .nav-link::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(to right, var(--accent-pink), var(--accent-purple));
+            transition: width var(--transition-medium);
+        }
+
+        .nav-link:hover {
+            color: var(--text-primary);
+        }
+
+        .nav-link:hover::before {
+            width: 100%;
+        }
+
+        .nav-link.active {
+            color: var(--text-primary);
+        }
+
+        .nav-link.active::before {
+            width: 100%;
+        }
+
+        /* Hero Section */
+        .hero-section {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 6rem 2rem 2rem;
+            width: 100%;
+        }
+
+        .hero-title {
+            font-family: 'Crimson Text', serif;
+            font-size: 4rem;
+            font-weight: 600;
+            line-height: 1.2;
+            margin-bottom: 1.5rem;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeUp 1s 0.5s forwards;
+        }
+
+        .hero-subtitle {
+            font-size: 1.3rem;
+            color: var(--text-secondary);
+            margin-bottom: 3rem;
+            max-width: 800px;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeUp 1s 0.7s forwards;
+        }
+
+        @keyframes fadeUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .begin-btn {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--accent-pink), var(--accent-purple));
+            color: white;
+            border: none;
+            padding: 1rem 2.5rem;
+            font-size: 1.1rem;
+            font-weight: 500;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 20px rgba(216, 122, 149, 0.3);
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeUp 1s 0.9s forwards;
+            text-decoration: none;
+        }
+
+        .begin-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(216, 122, 149, 0.4);
+        }
+
+        /* Page Sections */
+        .page-section {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+            padding: 6rem 0;
+            opacity: 0;
+            transition: opacity 0.8s ease;
+        }
+
+        .page-section.active {
+            opacity: 1;
+        }
+
+        .section-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            width: 100%;
+        }
+
+        .section-title {
+            font-family: 'Crimson Text', serif;
+            font-size: 3rem;
+            font-weight: 600;
+            margin-bottom: 3rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 80px;
+            height: 3px;
+            background: linear-gradient(to right, var(--accent-pink), var(--accent-purple));
+        }
+
+        .content-card {
+            background-color: rgba(21, 21, 34, 0.7);
+            border-radius: var(--border-radius);
+            padding: 3rem;
+            margin-bottom: 2.5rem;
+            box-shadow: var(--shadow-soft);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: transform 0.5s ease, box-shadow 0.5s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .content-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .content-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(to bottom, var(--accent-pink), var(--accent-purple));
+        }
+
+        .card-text {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            color: var(--text-primary);
+            margin-bottom: 1.5rem;
+        }
+
+        .card-text:last-child {
+            margin-bottom: 0;
+        }
+
+        .highlight {
+            color: var(--accent-pink);
+            font-weight: 500;
+        }
+
+        .emphasis {
+            font-style: italic;
+            color: var(--accent-blue);
+            font-weight: 500;
+        }
+
+        /* Bridge Visualization */
+        .bridge-visualization {
+            height: 200px;
+            margin: 3rem 0;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+        }
+
+        .bridge-path {
+            width: 100%;
+            height: 8px;
+            background: linear-gradient(to right, 
+                rgba(90, 143, 216, 0.8), 
+                rgba(122, 95, 216, 0.8), 
+                rgba(216, 122, 149, 0.8));
+            border-radius: 4px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .bridge-path::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            animation: shimmer 3s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+
+        .bridge-crack {
+            position: absolute;
+            left: 65%;
+            top: 0;
+            width: 40px;
+            height: 40px;
+            background-color: rgba(216, 122, 149, 0.1);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            animation: crack-pulse 3s infinite ease-in-out;
+        }
+
+        .bridge-crack::before {
+            content: '';
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            border: 2px solid var(--accent-pink);
+            border-radius: 50%;
+            opacity: 0.5;
+        }
+
+        @keyframes crack-pulse {
+            0%, 100% { transform: scale(1); opacity: 0.7; }
+            50% { transform: scale(1.2); opacity: 1; }
+        }
+
+        .person-figure {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 40px;
+            height: 40px;
+            background-color: var(--accent-blue);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 5px 15px rgba(90, 143, 216, 0.3);
+            animation: person-hesitation 6s infinite ease-in-out;
+        }
+
+        @keyframes person-hesitation {
+            0%, 20% { left: 50%; }
+            30% { left: 48%; }
+            40% { left: 52%; }
+            50%, 70% { left: 50%; }
+            80% { left: 47%; }
+            90% { left: 53%; }
+            100% { left: 50%; }
+        }
+
+        /* Heart Animation */
+        .floating-heart {
+            position: absolute;
+            font-size: 1.2rem;
+            color: var(--accent-pink);
+            opacity: 0;
+            z-index: -1;
+            animation: float-heart 20s linear infinite;
+        }
+
+        @keyframes float-heart {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.6;
+            }
+            90% {
+                opacity: 0.6;
+            }
+            100% {
+                transform: translateY(-100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* Quote Section */
+        .quote-section {
+            padding: 5rem 0;
+            text-align: center;
+            position: relative;
+        }
+
+        .quote-text {
+            font-family: 'Crimson Text', serif;
+            font-size: 2.2rem;
+            font-style: italic;
+            color: var(--text-primary);
+            max-width: 800px;
+            margin: 0 auto 2rem;
+            line-height: 1.5;
+            position: relative;
+            padding: 0 2rem;
+        }
+
+        .quote-text::before,
+        .quote-text::after {
+            content: '"';
+            font-size: 4rem;
+            color: var(--accent-pink);
+            position: absolute;
+            opacity: 0.3;
+        }
+
+        .quote-text::before {
+            top: -20px;
+            left: 0;
+        }
+
+        .quote-text::after {
+            bottom: -40px;
+            right: 0;
+        }
+
+        /* Footer */
+        .main-footer {
+            padding: 3rem 0;
+            text-align: center;
+            background-color: rgba(12, 12, 20, 0.9);
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .footer-text {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .hero-title {
+                font-size: 3rem;
+            }
+            
+            .section-title {
+                font-size: 2.5rem;
+            }
+            
+            .content-card {
+                padding: 2rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                gap: 1.5rem;
+            }
+            
+            .hero-title {
+                font-size: 2.5rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 1.1rem;
+            }
+            
+            .section-title {
+                font-size: 2rem;
+            }
+            
+            .card-text {
+                font-size: 1.1rem;
+            }
+            
+            .quote-text {
+                font-size: 1.8rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .nav-container {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .nav-links {
+                gap: 1rem;
+            }
+            
+            .content-card {
+                padding: 1.5rem;
+            }
+            
+            .quote-text {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div class="loading-screen" id="loadingScreen">
+        <div class="loading-heart">
+            <i class="fas fa-heartbeat"></i>
+        </div>
+        <div class="loading-text">Loading Emotional Journey</div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="main-nav" id="mainNav">
+        <div class="nav-container">
+            <a href="#" class="logo">EmotionalCrossroads</a>
+            <div class="nav-links">
+                <a href="#hero" class="nav-link active">Home</a>
+                <a href="#intro" class="nav-link">Struggle</a>
+                <a href="#relationship" class="nav-link">Relationship</a>
+                <a href="#crossroads" class="nav-link">Crossroads</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section" id="hero">
+        <div class="hero-content">
+            <h1 class="hero-title">A Journey Through Uncertainty</h1>
+            <p class="hero-subtitle">An emotional exploration of self-doubt, love, and the struggle to find one's path. Written on 05-01-2026 from a place of deep introspection.</p>
+            <a href="#intro" class="begin-btn">Begin the Journey</a>
+        </div>
+        
+        <!-- Floating hearts -->
+        <div id="floatingHearts"></div>
+    </section>
+
+    <!-- Page 1: Introduction -->
+    <section class="page-section" id="intro">
+        <div class="section-container">
+            <h2 class="section-title">The Weight of Existence</h2>
+            
+            <div class="content-card">
+                <p class="card-text">
+                    I'm really an unfortunate guy. Nothing in my life is going smoothly. 
+                    <span class="highlight">I hate myself.</span> I hate what I'm doing, why does it only happen to me? 
+                    I don't know if it happens to me only or to others as well.
+                </p>
+            </div>
+            
+            <div class="content-card">
+                <p class="card-text">
+                    I am now 19 years old but soon I will be 20. Although I am currently studying, 
+                    I'm always curious about my future. At my age, some people fall in love or 
+                    it could be said that they are attracted to the opposite gender.
+                </p>
+            </div>
+            
+            <div class="bridge-visualization">
+                <div class="bridge-path">
+                    <div class="bridge-crack"></div>
+                </div>
+                <div class="person-figure"></div>
+            </div>
+            
+            <div class="content-card">
+                <p class="card-text">
+                    I always thought that I would never fall in love with anyone. 
+                    <span class="emphasis">It's a pity.</span> When I was 14 years old, I was attracted to a girl for the first time. 
+                    But with the passing of time, I don't know how I fell for her.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Page 2: Relationship -->
+    <section class="page-section" id="relationship">
+        <div class="section-container">
+            <h2 class="section-title">A Damaged Connection</h2>
+            
+            <div class="content-card">
+                <p class="card-text">
+                    Until now we are in a relationship but that's not always good. 
+                    <span class="highlight">I always make her unhappy.</span> I don't want to, but somehow I make her unhappy.
+                    I thought that I'm not worthy of her. I'm not worthy of her love.
+                </p>
+            </div>
+            
+            <div class="content-card">
+                <p class="card-text">
+                    I want to say that to her but I can't tell her. I want to part ways with her but I can't.
+                    It's not that I'm with someone else or I want to cheat on her. 
+                    <span class="emphasis">It's that I'm not worthy of her.</span>
+                </p>
+            </div>
+            
+            <div class="bridge-visualization">
+                <div class="bridge-path">
+                    <div class="bridge-crack"></div>
+                </div>
+                <div class="person-figure"></div>
+            </div>
+            
+            <div class="content-card">
+                <p class="card-text">
+                    She is the best girl I've ever seen. I respect her. But I'm a guy who is not good at talking, 
+                    not good looking, and in serious situations I always lose my confidence.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Page 3: Crossroads -->
+    <section class="page-section" id="crossroads">
+        <div class="section-container">
+            <h2 class="section-title">The Path Ahead</h2>
+            
+            <div class="content-card">
+                <p class="card-text">
+                    When I'm trying to say what is in my heart, I can't say it to her. 
+                    <span class="highlight">I forget everything when I talk to her.</span> At that moment my mind is like an empty vessel.
+                </p>
+            </div>
+            
+            <div class="content-card">
+                <p class="card-text">
+                    I want to talk with her but I have no words for her. Although I'm still focused on my career, 
+                    I always miss her. <span class="emphasis">Now our relationship is on a damaged bridge.</span>
+                </p>
+            </div>
+            
+            <div class="bridge-visualization">
+                <div class="bridge-path">
+                    <div class="bridge-crack"></div>
+                </div>
+                <div class="person-figure"></div>
+            </div>
+            
+            <div class="quote-section">
+                <div class="quote-text">
+                    I am now on a path where I can't go back and can't go forward, 
+                    and also if I don't move I know I will perish here.
+                </div>
+            </div>
+            
+            <div class="content-card">
+                <p class="card-text">
+                    Still I want to move forward, but I think if I go back or I stop here 
+                    then it will be good for her. I don't know if I'm wrong or not.
+                </p>
+            </div>
+            
+            <div class="content-card">
+                <p class="card-text">
+                    But I wish for her to live happily in the future. 
+                    I don't know when it will happen but <span class="highlight">her smile is a lot to me now.</span>
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="main-footer">
+        <div class="section-container">
+            <p class="footer-text">An emotional expression from a soul at crossroads</p>
+            <p class="footer-text">© 2026 | Written with raw honesty and introspection</p>
+        </div>
+    </footer>
+
+    <script>
+        // Initialize when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            // Loading screen
+            const loadingScreen = document.getElementById('loadingScreen');
+            
+            // Hide loading screen after 2 seconds
+            setTimeout(() => {
+                loadingScreen.classList.add('hidden');
+            }, 2000);
+            
+            // Create floating hearts
+            createFloatingHearts();
+            
+            // Initialize scroll animations
+            initScrollAnimations();
+            
+            // Initialize navigation
+            initNavigation();
+        });
+        
+        // Create floating hearts
+        function createFloatingHearts() {
+            const container = document.getElementById('floatingHearts');
+            const heartCount = 8;
+            
+            for (let i = 0; i < heartCount; i++) {
+                const heart = document.createElement('div');
+                heart.classList.add('floating-heart');
+                heart.innerHTML = '<i class="fas fa-heart"></i>';
+                
+                // Random properties
+                const size = Math.random() * 1 + 0.8;
+                const left = Math.random() * 100;
+                const delay = Math.random() * 15;
+                const duration = Math.random() * 10 + 20;
+                
+                heart.style.fontSize = `${size}rem`;
+                heart.style.left = `${left}vw`;
+                heart.style.animationDelay = `${delay}s`;
+                heart.style.animationDuration = `${duration}s`;
+                
+                container.appendChild(heart);
+            }
+        }
+        
+        // Initialize scroll animations
+        function initScrollAnimations() {
+            const sections = document.querySelectorAll('.page-section');
+            const nav = document.getElementById('mainNav');
+            let lastScroll = 0;
+            
+            // Check which section is in view
+            function checkScroll() {
+                const scrollPos = window.scrollY + 100;
+                
+                // Handle nav hide/show on scroll
+                const currentScroll = window.pageYOffset;
+                if (currentScroll > lastScroll && currentScroll > 300) {
+                    nav.classList.add('hidden');
+                } else {
+                    nav.classList.remove('hidden');
+                }
+                lastScroll = currentScroll;
+                
+                // Check which section is active
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    const sectionHeight = section.clientHeight;
+                    
+                    if (scrollPos >= sectionTop && scrollPos < sectionTop + sectionHeight) {
+                        section.classList.add('active');
+                        
+                        // Update nav link
+                        const id = section.getAttribute('id');
+                        const correspondingLink = document.querySelector(`.nav-link[href="#${id}"]`);
+                        
+                        if (correspondingLink) {
+                            document.querySelectorAll('.nav-link').forEach(link => {
+                                link.classList.remove('active');
+                            });
+                            correspondingLink.classList.add('active');
+                        }
+                    }
+                });
+            }
+            
+            // Initial check
+            checkScroll();
+            
+            // Listen for scroll
+            window.addEventListener('scroll', checkScroll);
+        }
+        
+        // Initialize navigation
+        function initNavigation() {
+            const navLinks = document.querySelectorAll('.nav-link');
+            
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    // Get target section
+                    const targetId = this.getAttribute('href');
+                    const targetSection = document.querySelector(targetId);
+                    
+                    if (targetSection) {
+                        // Update active nav link
+                        navLinks.forEach(link => link.classList.remove('active'));
+                        this.classList.add('active');
+                        
+                        // Smooth scroll to section
+                        window.scrollTo({
+                            top: targetSection.offsetTop - 80,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+            
+            // Hero button
+            const heroBtn = document.querySelector('.begin-btn');
+            if (heroBtn) {
+                heroBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    const targetId = this.getAttribute('href');
+                    const targetSection = document.querySelector(targetId);
+                    
+                    if (targetSection) {
+                        window.scrollTo({
+                            top: targetSection.offsetTop - 80,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            }
+        }
+        
+        // Add parallax effect to background
+        window.addEventListener('mousemove', function(e) {
+            const x = e.clientX / window.innerWidth;
+            const y = e.clientY / window.innerHeight;
+            
+            document.body.style.backgroundImage = 
+                `radial-gradient(ellipse at ${x * 100}% ${y * 100}%, rgba(120, 90, 216, 0.07) 0%, transparent 40%),
+                 radial-gradient(ellipse at ${100 - x * 100}% ${100 - y * 100}%, rgba(216, 122, 149, 0.07) 0%, transparent 40%)`;
+        });
+    </script>
+</body>
+</html>
