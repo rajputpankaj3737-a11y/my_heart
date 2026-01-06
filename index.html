@@ -3,895 +3,804 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Emotional Crossroads | A Reflective Journey</title>
+    <title>Emotional Odyssey</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Crimson+Text:wght@400;600&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --primary-dark: #0c0c14;
-            --secondary-dark: #151522;
-            --accent-pink: #d87a95;
-            --accent-purple: #7a5fd8;
-            --accent-blue: #5a8fd8;
-            --text-primary: #f0f0f8;
-            --text-secondary: #b0b0c8;
-            --text-muted: #8888a8;
-            --transition-slow: 0.6s cubic-bezier(0.22, 0.61, 0.36, 1);
-            --transition-medium: 0.4s ease;
-            --transition-fast: 0.2s ease;
-            --border-radius: 12px;
-            --shadow-soft: 0 10px 30px rgba(0, 0, 0, 0.25);
-            --shadow-hard: 0 5px 15px rgba(0, 0, 0, 0.4);
-        }
-
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-
-        html {
-            scroll-behavior: smooth;
-        }
-
+        
         body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--primary-dark);
-            color: var(--text-primary);
-            line-height: 1.7;
+            font-family: 'Courier New', monospace;
+            background: #0a0a14;
+            color: #fff;
             overflow-x: hidden;
-            background-image: 
-                radial-gradient(ellipse at 20% 20%, rgba(120, 90, 216, 0.05) 0%, transparent 40%),
-                radial-gradient(ellipse at 80% 80%, rgba(216, 122, 149, 0.05) 0%, transparent 40%);
             min-height: 100vh;
+            position: relative;
         }
-
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-
-        ::-webkit-scrollbar-track {
-            background: var(--secondary-dark);
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: linear-gradient(to bottom, var(--accent-pink), var(--accent-purple));
-            border-radius: 4px;
-        }
-
-        /* Loading Screen */
-        .loading-screen {
+        
+        /* Particle Canvas */
+        #particle-canvas {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: var(--primary-dark);
+            z-index: -2;
+        }
+        
+        /* Floating Elements */
+        .floating-element {
+            position: absolute;
+            border-radius: 50%;
+            opacity: 0.3;
+            z-index: -1;
+            filter: blur(40px);
+            animation: float 15s infinite ease-in-out;
+        }
+        
+        .float-1 {
+            width: 300px;
+            height: 300px;
+            background: linear-gradient(45deg, #ff0066, #6600ff);
+            top: 10%;
+            left: 5%;
+            animation-delay: 0s;
+        }
+        
+        .float-2 {
+            width: 400px;
+            height: 400px;
+            background: linear-gradient(45deg, #00ccff, #ff0066);
+            bottom: 10%;
+            right: 5%;
+            animation-delay: 2s;
+        }
+        
+        .float-3 {
+            width: 250px;
+            height: 250px;
+            background: linear-gradient(45deg, #ffcc00, #00ffcc);
+            top: 50%;
+            left: 70%;
+            animation-delay: 4s;
+        }
+        
+        /* Main Container with Glass Morphism */
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 30px;
+            position: relative;
+            z-index: 10;
+        }
+        
+        .glass-card {
+            background: rgba(20, 20, 40, 0.7);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5),
+                        0 0 100px rgba(255, 0, 102, 0.1);
+            padding: 40px;
+            margin-bottom: 40px;
+            transform: translateY(50px);
+            opacity: 0;
+            animation: slideUp 1s forwards 0.5s;
+        }
+        
+        /* Header with Glitch Effect */
+        .header {
+            text-align: center;
+            margin-bottom: 50px;
+            position: relative;
+        }
+        
+        .glitch-title {
+            font-size: 4rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 5px;
+            position: relative;
+            color: #fff;
+            text-shadow: 0.05em 0 0 #ff0066, -0.03em -0.04em 0 #00ccff,
+                        0.025em 0.04em 0 #ffcc00;
+            animation: glitch 5s infinite;
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            color: #aaa;
+            margin-top: 20px;
+            letter-spacing: 3px;
+            opacity: 0;
+            animation: fadeIn 2s forwards 1.5s;
+        }
+        
+        /* Animated Date */
+        .date-container {
             display: flex;
             justify-content: center;
             align-items: center;
-            flex-direction: column;
-            z-index: 10000;
-            transition: opacity 1s ease, visibility 1s ease;
-        }
-
-        .loading-screen.hidden {
+            margin-top: 30px;
+            gap: 15px;
             opacity: 0;
-            visibility: hidden;
+            animation: fadeIn 2s forwards 2s;
         }
-
-        .loading-heart {
-            font-size: 3rem;
-            color: var(--accent-pink);
-            margin-bottom: 2rem;
-            animation: heartbeat 1.5s infinite ease-in-out;
-        }
-
-        @keyframes heartbeat {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-        }
-
-        .loading-text {
-            font-size: 1.2rem;
-            color: var(--text-secondary);
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            font-weight: 300;
-        }
-
-        /* Navigation */
-        .main-nav {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            padding: 1.5rem 0;
-            z-index: 1000;
-            background-color: rgba(12, 12, 20, 0.85);
-            backdrop-filter: blur(15px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-            transition: transform 0.5s ease, padding 0.3s ease;
-        }
-
-        .main-nav.hidden {
-            transform: translateY(-100%);
-        }
-
-        .nav-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 2rem;
+        
+        .date-item {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 10px 20px;
+            border-radius: 50px;
             display: flex;
-            justify-content: space-between;
             align-items: center;
+            gap: 10px;
+            transition: all 0.3s;
         }
-
-        .logo {
-            font-family: 'Crimson Text', serif;
-            font-size: 1.8rem;
-            font-weight: 600;
-            color: var(--text-primary);
+        
+        .date-item:hover {
+            background: rgba(255, 0, 102, 0.3);
+            transform: scale(1.05);
+        }
+        
+        /* Text Blocks with Typing Animation */
+        .text-block {
+            margin-bottom: 40px;
+            padding: 20px;
+            border-left: 3px solid transparent;
+            transition: all 0.5s;
             position: relative;
-            padding-bottom: 5px;
+            overflow: hidden;
+            opacity: 0;
+            transform: translateX(-50px);
         }
-
-        .logo::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 30px;
-            height: 2px;
-            background: linear-gradient(to right, var(--accent-pink), var(--accent-purple));
+        
+        .text-block.visible {
+            opacity: 1;
+            transform: translateX(0);
         }
-
-        .nav-links {
-            display: flex;
-            gap: 2.5rem;
+        
+        .text-block:nth-child(odd) {
+            border-left-color: #ff0066;
         }
-
-        .nav-link {
-            color: var(--text-secondary);
-            text-decoration: none;
-            font-size: 1rem;
-            font-weight: 500;
-            letter-spacing: 0.5px;
+        
+        .text-block:nth-child(even) {
+            border-left-color: #00ccff;
+        }
+        
+        .text-block:hover {
+            background: rgba(255, 255, 255, 0.05);
+            padding-left: 30px;
+            box-shadow: 0 0 30px rgba(255, 0, 102, 0.1);
+        }
+        
+        /* Heartbeat Section */
+        .heart-section {
+            text-align: center;
+            margin: 50px 0;
+            padding: 30px;
+            background: rgba(255, 0, 102, 0.1);
+            border-radius: 15px;
             position: relative;
-            padding: 0.5rem 0;
-            transition: color 0.3s ease;
+            overflow: hidden;
+            opacity: 0;
+            animation: heartbeatContainer 3s infinite 3s, fadeIn 2s forwards 3s;
         }
-
-        .nav-link::before {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: linear-gradient(to right, var(--accent-pink), var(--accent-purple));
-            transition: width var(--transition-medium);
+        
+        .heartbeat {
+            font-size: 4rem;
+            color: #ff0066;
+            animation: heartbeat 1.5s infinite;
         }
-
-        .nav-link:hover {
-            color: var(--text-primary);
-        }
-
-        .nav-link:hover::before {
-            width: 100%;
-        }
-
-        .nav-link.active {
-            color: var(--text-primary);
-        }
-
-        .nav-link.active::before {
-            width: 100%;
-        }
-
-        /* Hero Section */
-        .hero-section {
-            min-height: 100vh;
+        
+        /* Age Counter */
+        .age-counter {
             display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin: 40px 0;
+        }
+        
+        .age-box {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
             align-items: center;
             position: relative;
             overflow: hidden;
+            opacity: 0;
+            transform: scale(0);
         }
-
-        .hero-content {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 6rem 2rem 2rem;
+        
+        .age-box:nth-child(1) {
+            background: linear-gradient(45deg, #ff0066, #6600ff);
+            animation: popIn 1s forwards 4s;
+        }
+        
+        .age-box:nth-child(2) {
+            background: linear-gradient(45deg, #00ccff, #00ffcc);
+            animation: popIn 1s forwards 4.5s;
+        }
+        
+        .age-number {
+            font-size: 3rem;
+            font-weight: 900;
+        }
+        
+        .age-text {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+        
+        /* Relationship Bridge */
+        .bridge-container {
+            height: 200px;
+            position: relative;
+            margin: 50px 0;
+            opacity: 0;
+            animation: fadeIn 2s forwards 5s;
+        }
+        
+        .bridge {
+            position: absolute;
+            top: 50%;
+            left: 0;
             width: 100%;
+            height: 10px;
+            background: linear-gradient(90deg, #ff0066, #00ccff, #ffcc00);
+            border-radius: 5px;
+            transform: translateY(-50%);
         }
-
-        .hero-title {
-            font-family: 'Crimson Text', serif;
-            font-size: 4rem;
-            font-weight: 600;
-            line-height: 1.2;
-            margin-bottom: 1.5rem;
+        
+        .bridge::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, #ff0066, #00ccff, #ffcc00);
+            filter: blur(20px);
+            opacity: 0.5;
+        }
+        
+        .bridge-crack {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            background: #0a0a14;
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            animation: crackPulse 3s infinite;
+        }
+        
+        .bridge-crack::before, .bridge-crack::after {
+            content: '';
+            position: absolute;
+            width: 80px;
+            height: 30px;
+            background: #0a0a14;
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(45deg);
+        }
+        
+        .bridge-crack::after {
+            transform: translate(-50%, -50%) rotate(-45deg);
+        }
+        
+        /* Path Visualization */
+        .path-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 60px 0;
+            position: relative;
             opacity: 0;
-            transform: translateY(30px);
-            animation: fadeUp 1s 0.5s forwards;
+            animation: fadeIn 2s forwards 5.5s;
         }
-
-        .hero-subtitle {
-            font-size: 1.3rem;
-            color: var(--text-secondary);
-            margin-bottom: 3rem;
-            max-width: 800px;
+        
+        .path-point {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .path-past {
+            background: linear-gradient(45deg, #ff0066, #9900cc);
+            animation: bounce 2s infinite;
+        }
+        
+        .path-present {
+            background: linear-gradient(45deg, #00ccff, #0099cc);
+            animation: bounce 2s infinite 0.5s;
+        }
+        
+        .path-future {
+            background: linear-gradient(45deg, #ffcc00, #ff9900);
+            animation: bounce 2s infinite 1s;
+        }
+        
+        .path-line {
+            position: absolute;
+            top: 50%;
+            left: 10%;
+            width: 80%;
+            height: 3px;
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-50%);
+            z-index: 1;
+        }
+        
+        .path-line::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 30%;
+            height: 100%;
+            background: linear-gradient(90deg, #ff0066, #00ccff);
+            animation: pathProgress 10s infinite;
+        }
+        
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 30px;
+            margin-top: 50px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
             opacity: 0;
-            transform: translateY(30px);
-            animation: fadeUp 1s 0.7s forwards;
+            animation: fadeIn 2s forwards 6s;
         }
-
-        @keyframes fadeUp {
+        
+        .wish-text {
+            font-size: 1.5rem;
+            color: #ffcc00;
+            margin-bottom: 20px;
+            text-shadow: 0 0 10px rgba(255, 204, 0, 0.5);
+        }
+        
+        /* Animations */
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-50px) rotate(180deg); }
+        }
+        
+        @keyframes slideUp {
             to {
                 opacity: 1;
                 transform: translateY(0);
             }
         }
-
-        .begin-btn {
-            display: inline-block;
-            background: linear-gradient(135deg, var(--accent-pink), var(--accent-purple));
-            color: white;
-            border: none;
-            padding: 1rem 2.5rem;
-            font-size: 1.1rem;
-            font-weight: 500;
-            border-radius: 50px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 5px 20px rgba(216, 122, 149, 0.3);
-            opacity: 0;
-            transform: translateY(30px);
-            animation: fadeUp 1s 0.9s forwards;
-            text-decoration: none;
+        
+        @keyframes glitch {
+            0% { text-shadow: 0.05em 0 0 #ff0066, -0.03em -0.04em 0 #00ccff; }
+            15% { text-shadow: 0.05em 0 0 #ff0066, -0.03em -0.04em 0 #00ccff; }
+            16% { text-shadow: -0.05em -0.025em 0 #ff0066, 0.025em 0.035em 0 #00ccff; }
+            49% { text-shadow: -0.05em -0.025em 0 #ff0066, 0.025em 0.035em 0 #00ccff; }
+            50% { text-shadow: 0.05em 0 0 #ff0066, -0.03em -0.04em 0 #00ccff; }
+            99% { text-shadow: 0.05em 0 0 #ff0066, -0.03em -0.04em 0 #00ccff; }
+            100% { text-shadow: -0.05em 0 0 #ff0066, 0.025em 0.035em 0 #00ccff; }
         }
-
-        .begin-btn:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(216, 122, 149, 0.4);
+        
+        @keyframes fadeIn {
+            to { opacity: 1; }
         }
-
-        /* Page Sections */
-        .page-section {
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            position: relative;
-            padding: 6rem 0;
-            opacity: 0;
-            transition: opacity 0.8s ease;
+        
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
         }
-
-        .page-section.active {
-            opacity: 1;
+        
+        @keyframes heartbeatContainer {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(255, 0, 102, 0.5); }
+            70% { box-shadow: 0 0 0 30px rgba(255, 0, 102, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(255, 0, 102, 0); }
         }
-
-        .section-container {
-            max-width: 1000px;
-            margin: 0 auto;
-            padding: 0 2rem;
-            width: 100%;
-        }
-
-        .section-title {
-            font-family: 'Crimson Text', serif;
-            font-size: 3rem;
-            font-weight: 600;
-            margin-bottom: 3rem;
-            position: relative;
-            display: inline-block;
-        }
-
-        .section-title::after {
-            content: '';
-            position: absolute;
-            bottom: -10px;
-            left: 0;
-            width: 80px;
-            height: 3px;
-            background: linear-gradient(to right, var(--accent-pink), var(--accent-purple));
-        }
-
-        .content-card {
-            background-color: rgba(21, 21, 34, 0.7);
-            border-radius: var(--border-radius);
-            padding: 3rem;
-            margin-bottom: 2.5rem;
-            box-shadow: var(--shadow-soft);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            transition: transform 0.5s ease, box-shadow 0.5s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .content-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-        }
-
-        .content-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 4px;
-            height: 100%;
-            background: linear-gradient(to bottom, var(--accent-pink), var(--accent-purple));
-        }
-
-        .card-text {
-            font-size: 1.2rem;
-            line-height: 1.8;
-            color: var(--text-primary);
-            margin-bottom: 1.5rem;
-        }
-
-        .card-text:last-child {
-            margin-bottom: 0;
-        }
-
-        .highlight {
-            color: var(--accent-pink);
-            font-weight: 500;
-        }
-
-        .emphasis {
-            font-style: italic;
-            color: var(--accent-blue);
-            font-weight: 500;
-        }
-
-        /* Bridge Visualization */
-        .bridge-visualization {
-            height: 200px;
-            margin: 3rem 0;
-            position: relative;
-            display: flex;
-            justify-content: center;
-            align-items: flex-end;
-        }
-
-        .bridge-path {
-            width: 100%;
-            height: 8px;
-            background: linear-gradient(to right, 
-                rgba(90, 143, 216, 0.8), 
-                rgba(122, 95, 216, 0.8), 
-                rgba(216, 122, 149, 0.8));
-            border-radius: 4px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .bridge-path::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-            animation: shimmer 3s infinite;
-        }
-
-        @keyframes shimmer {
-            0% { left: -100%; }
-            100% { left: 100%; }
-        }
-
-        .bridge-crack {
-            position: absolute;
-            left: 65%;
-            top: 0;
-            width: 40px;
-            height: 40px;
-            background-color: rgba(216, 122, 149, 0.1);
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            animation: crack-pulse 3s infinite ease-in-out;
-        }
-
-        .bridge-crack::before {
-            content: '';
-            position: absolute;
-            width: 30px;
-            height: 30px;
-            border: 2px solid var(--accent-pink);
-            border-radius: 50%;
-            opacity: 0.5;
-        }
-
-        @keyframes crack-pulse {
-            0%, 100% { transform: scale(1); opacity: 0.7; }
-            50% { transform: scale(1.2); opacity: 1; }
-        }
-
-        .person-figure {
-            position: absolute;
-            bottom: 10px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 40px;
-            height: 40px;
-            background-color: var(--accent-blue);
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            box-shadow: 0 5px 15px rgba(90, 143, 216, 0.3);
-            animation: person-hesitation 6s infinite ease-in-out;
-        }
-
-        @keyframes person-hesitation {
-            0%, 20% { left: 50%; }
-            30% { left: 48%; }
-            40% { left: 52%; }
-            50%, 70% { left: 50%; }
-            80% { left: 47%; }
-            90% { left: 53%; }
-            100% { left: 50%; }
-        }
-
-        /* Heart Animation */
-        .floating-heart {
-            position: absolute;
-            font-size: 1.2rem;
-            color: var(--accent-pink);
-            opacity: 0;
-            z-index: -1;
-            animation: float-heart 20s linear infinite;
-        }
-
-        @keyframes float-heart {
-            0% {
-                transform: translateY(100vh) rotate(0deg);
-                opacity: 0;
-            }
-            10% {
-                opacity: 0.6;
-            }
-            90% {
-                opacity: 0.6;
-            }
-            100% {
-                transform: translateY(-100px) rotate(360deg);
-                opacity: 0;
+        
+        @keyframes popIn {
+            to {
+                opacity: 1;
+                transform: scale(1);
             }
         }
-
-        /* Quote Section */
-        .quote-section {
-            padding: 5rem 0;
-            text-align: center;
-            position: relative;
+        
+        @keyframes crackPulse {
+            0%, 100% { transform: translate(-50%, -50%) scale(1); }
+            50% { transform: translate(-50%, -50%) scale(1.2); }
         }
-
-        .quote-text {
-            font-family: 'Crimson Text', serif;
-            font-size: 2.2rem;
-            font-style: italic;
-            color: var(--text-primary);
-            max-width: 800px;
-            margin: 0 auto 2rem;
-            line-height: 1.5;
-            position: relative;
-            padding: 0 2rem;
+        
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
         }
-
-        .quote-text::before,
-        .quote-text::after {
-            content: '"';
-            font-size: 4rem;
-            color: var(--accent-pink);
-            position: absolute;
-            opacity: 0.3;
+        
+        @keyframes pathProgress {
+            0% { width: 0%; }
+            50% { width: 100%; }
+            100% { width: 0%; }
         }
-
-        .quote-text::before {
-            top: -20px;
-            left: 0;
+        
+        @keyframes typing {
+            from { width: 0; }
+            to { width: 100%; }
         }
-
-        .quote-text::after {
-            bottom: -40px;
-            right: 0;
-        }
-
-        /* Footer */
-        .main-footer {
-            padding: 3rem 0;
-            text-align: center;
-            background-color: rgba(12, 12, 20, 0.9);
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
-        }
-
-        .footer-text {
-            color: var(--text-muted);
-            font-size: 0.9rem;
-            letter-spacing: 1px;
-        }
-
-        /* Responsive Design */
-        @media (max-width: 992px) {
-            .hero-title {
-                font-size: 3rem;
-            }
-            
-            .section-title {
-                font-size: 2.5rem;
-            }
-            
-            .content-card {
-                padding: 2rem;
-            }
-        }
-
+        
+        /* Responsive */
         @media (max-width: 768px) {
-            .nav-links {
-                gap: 1.5rem;
-            }
-            
-            .hero-title {
+            .glitch-title {
                 font-size: 2.5rem;
             }
             
-            .hero-subtitle {
-                font-size: 1.1rem;
+            .glass-card {
+                padding: 20px;
             }
             
-            .section-title {
-                font-size: 2rem;
-            }
-            
-            .card-text {
-                font-size: 1.1rem;
-            }
-            
-            .quote-text {
-                font-size: 1.8rem;
-            }
-        }
-
-        @media (max-width: 576px) {
-            .nav-container {
+            .age-counter {
                 flex-direction: column;
-                gap: 1rem;
+                align-items: center;
             }
             
-            .nav-links {
-                gap: 1rem;
+            .path-container {
+                flex-direction: column;
+                height: 300px;
             }
             
-            .content-card {
-                padding: 1.5rem;
+            .path-line {
+                width: 3px;
+                height: 80%;
+                left: 50%;
+                top: 10%;
             }
             
-            .quote-text {
-                font-size: 1.5rem;
+            .path-line::after {
+                width: 100%;
+                height: 30%;
+                background: linear-gradient(to bottom, #ff0066, #00ccff);
             }
         }
     </style>
 </head>
 <body>
-    <!-- Loading Screen -->
-    <div class="loading-screen" id="loadingScreen">
-        <div class="loading-heart">
-            <i class="fas fa-heartbeat"></i>
+    <!-- Particle Canvas -->
+    <canvas id="particle-canvas"></canvas>
+    
+    <!-- Floating Background Elements -->
+    <div class="floating-element float-1"></div>
+    <div class="floating-element float-2"></div>
+    <div class="floating-element float-3"></div>
+    
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1 class="glitch-title">EMOTIONAL ODYSSEY</h1>
+            <p class="subtitle">A Journey Through Uncertainty and Longing</p>
         </div>
-        <div class="loading-text">Loading Emotional Journey</div>
+        
+        <!-- Main Content -->
+        <div class="glass-card">
+            <!-- Text Block 1 -->
+            <div class="text-block" id="block1">
+                I'm really an unfortunate guy. Nothing in my life is going smoothly. I write this on 05-01-2026 at the hostel. I hate myself. I hate what I'm doing, and why does it only happen to me? I don't know if it happens only to me or to others too.
+            </div>
+            
+            <!-- Age Counter -->
+            <div class="age-counter">
+                <div class="age-box">
+                    <div class="age-number">19</div>
+                    <div class="age-text">Current Age</div>
+                </div>
+                <div class="age-box">
+                    <div class="age-number">20</div>
+                    <div class="age-text">Turning Soon</div>
+                </div>
+            </div>
+            
+            <!-- Text Block 2 -->
+            <div class="text-block" id="block2">
+                I am now 19 years old but soon I will be 20 years old. Although I am currently studying, I'm always curious about my future. At my age, some people fall in love or it can be said that they are attracted to the opposite gender.
+            </div>
+            
+            <!-- Heart Section -->
+            <div class="heart-section">
+                <div class="heartbeat">
+                    <i class="fas fa-heartbeat"></i>
+                </div>
+                <p style="margin-top: 20px; font-size: 1.2rem;">The Heart's Dilemma</p>
+            </div>
+            
+            <!-- Text Block 3 -->
+            <div class="text-block" id="block3">
+                I always thought that I would never fall in love with anyone. It's a pity. When I was 14 years old, I was attracted to a girl for the first time. But with the passing of time, I don't know how I fell for her. Until now we are in a relationship, but that's not always good.
+            </div>
+            
+            <!-- Text Block 4 -->
+            <div class="text-block" id="block4">
+                I always make her unhappy. I don't want to, but somehow I make her unhappy. I think that I'm not worthy of her. I'm not worthy of her love. I want to say that to her, but I can't tell her. I want to part ways with her, but I can't. It's not that I'm with someone else or I want to cheat on her. It's that I'm not worthy of her.
+            </div>
+            
+            <!-- Bridge Visualization -->
+            <div class="bridge-container">
+                <div class="bridge"></div>
+                <div class="bridge-crack"></div>
+                <div style="position: absolute; top: 60px; left: 50%; transform: translateX(-50%); font-size: 0.9rem; color: #aaa;">
+                    Damaged Bridge of Relationship
+                </div>
+            </div>
+            
+            <!-- Text Block 5 -->
+            <div class="text-block" id="block5">
+                She is the best girl I've ever seen. I respect her. But I'm a guy who is not good at talking, not good-looking, and in serious situations I always lose my confidence. When I'm trying to say what is in my heart, I can't say it to her. I forget everything when I talk to her. At that moment, my mind is like an empty vessel.
+            </div>
+            
+            <!-- Path Visualization -->
+            <div class="path-container">
+                <div class="path-point path-past">14 yrs</div>
+                <div class="path-point path-present">NOW</div>
+                <div class="path-point path-future">?</div>
+                <div class="path-line"></div>
+            </div>
+            
+            <!-- Text Block 6 -->
+            <div class="text-block" id="block6">
+                Although I'm still focused on my career, I always miss her. Now our relationship is on a damaged bridge. I don't know what I have to do. If I go back, I will destroy myself with my own hands. But I don't know how to repair it. If in the nearer future it is repaired, I don't know how to walk on this path.
+            </div>
+            
+            <!-- Text Block 7 -->
+            <div class="text-block" id="block7">
+                I am now on a path where I can't go back and can't go forward, and also if I don't move I know I will perish here. Still I want to move forward, but I think if I go back or I stop here then it will be good for her. I don't know if I'm wrong or not. But I wish her to live happily in the future. I don't know when it will happen, but her smile means a lot to me now.
+            </div>
+        </div>
+        
+        <!-- Footer -->
+        <div class="footer">
+            <div class="wish-text">
+                "Her smile means a lot to me now"
+            </div>
+            <p>A reflection from a 19-year-old at the crossroads of life and love</p>
+            <p style="margin-top: 20px; color: #aaa;">
+                <i class="far fa-heart"></i> Anonymous | January 2026
+            </p>
+        </div>
     </div>
 
-    <!-- Navigation -->
-    <nav class="main-nav" id="mainNav">
-        <div class="nav-container">
-            <a href="#" class="logo">EmotionalCrossroads</a>
-            <div class="nav-links">
-                <a href="#hero" class="nav-link active">Home</a>
-                <a href="#intro" class="nav-link">Struggle</a>
-                <a href="#relationship" class="nav-link">Relationship</a>
-                <a href="#crossroads" class="nav-link">Crossroads</a>
-            </div>
-        </div>
-    </nav>
-
-    <!-- Hero Section -->
-    <section class="hero-section" id="hero">
-        <div class="hero-content">
-            <h1 class="hero-title">A Journey Through Uncertainty</h1>
-            <p class="hero-subtitle">An emotional exploration of self-doubt, love, and the struggle to find one's path. Written on 05-01-2026 from a place of deep introspection.</p>
-            <a href="#intro" class="begin-btn">Begin the Journey</a>
-        </div>
-        
-        <!-- Floating hearts -->
-        <div id="floatingHearts"></div>
-    </section>
-
-    <!-- Page 1: Introduction -->
-    <section class="page-section" id="intro">
-        <div class="section-container">
-            <h2 class="section-title">The Weight of Existence</h2>
-            
-            <div class="content-card">
-                <p class="card-text">
-                    I'm really an unfortunate guy. Nothing in my life is going smoothly. 
-                    <span class="highlight">I hate myself.</span> I hate what I'm doing, why does it only happen to me? 
-                    I don't know if it happens to me only or to others as well.
-                </p>
-            </div>
-            
-            <div class="content-card">
-                <p class="card-text">
-                    I am now 19 years old but soon I will be 20. Although I am currently studying, 
-                    I'm always curious about my future. At my age, some people fall in love or 
-                    it could be said that they are attracted to the opposite gender.
-                </p>
-            </div>
-            
-            <div class="bridge-visualization">
-                <div class="bridge-path">
-                    <div class="bridge-crack"></div>
-                </div>
-                <div class="person-figure"></div>
-            </div>
-            
-            <div class="content-card">
-                <p class="card-text">
-                    I always thought that I would never fall in love with anyone. 
-                    <span class="emphasis">It's a pity.</span> When I was 14 years old, I was attracted to a girl for the first time. 
-                    But with the passing of time, I don't know how I fell for her.
-                </p>
-            </div>
-        </div>
-    </section>
-
-    <!-- Page 2: Relationship -->
-    <section class="page-section" id="relationship">
-        <div class="section-container">
-            <h2 class="section-title">A Damaged Connection</h2>
-            
-            <div class="content-card">
-                <p class="card-text">
-                    Until now we are in a relationship but that's not always good. 
-                    <span class="highlight">I always make her unhappy.</span> I don't want to, but somehow I make her unhappy.
-                    I thought that I'm not worthy of her. I'm not worthy of her love.
-                </p>
-            </div>
-            
-            <div class="content-card">
-                <p class="card-text">
-                    I want to say that to her but I can't tell her. I want to part ways with her but I can't.
-                    It's not that I'm with someone else or I want to cheat on her. 
-                    <span class="emphasis">It's that I'm not worthy of her.</span>
-                </p>
-            </div>
-            
-            <div class="bridge-visualization">
-                <div class="bridge-path">
-                    <div class="bridge-crack"></div>
-                </div>
-                <div class="person-figure"></div>
-            </div>
-            
-            <div class="content-card">
-                <p class="card-text">
-                    She is the best girl I've ever seen. I respect her. But I'm a guy who is not good at talking, 
-                    not good looking, and in serious situations I always lose my confidence.
-                </p>
-            </div>
-        </div>
-    </section>
-
-    <!-- Page 3: Crossroads -->
-    <section class="page-section" id="crossroads">
-        <div class="section-container">
-            <h2 class="section-title">The Path Ahead</h2>
-            
-            <div class="content-card">
-                <p class="card-text">
-                    When I'm trying to say what is in my heart, I can't say it to her. 
-                    <span class="highlight">I forget everything when I talk to her.</span> At that moment my mind is like an empty vessel.
-                </p>
-            </div>
-            
-            <div class="content-card">
-                <p class="card-text">
-                    I want to talk with her but I have no words for her. Although I'm still focused on my career, 
-                    I always miss her. <span class="emphasis">Now our relationship is on a damaged bridge.</span>
-                </p>
-            </div>
-            
-            <div class="bridge-visualization">
-                <div class="bridge-path">
-                    <div class="bridge-crack"></div>
-                </div>
-                <div class="person-figure"></div>
-            </div>
-            
-            <div class="quote-section">
-                <div class="quote-text">
-                    I am now on a path where I can't go back and can't go forward, 
-                    and also if I don't move I know I will perish here.
-                </div>
-            </div>
-            
-            <div class="content-card">
-                <p class="card-text">
-                    Still I want to move forward, but I think if I go back or I stop here 
-                    then it will be good for her. I don't know if I'm wrong or not.
-                </p>
-            </div>
-            
-            <div class="content-card">
-                <p class="card-text">
-                    But I wish for her to live happily in the future. 
-                    I don't know when it will happen but <span class="highlight">her smile is a lot to me now.</span>
-                </p>
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="main-footer">
-        <div class="section-container">
-            <p class="footer-text">An emotional expression from a soul at crossroads</p>
-            <p class="footer-text">© 2026 | Written with raw honesty and introspection</p>
-        </div>
-    </footer>
-
     <script>
-        // Initialize when page loads
-        document.addEventListener('DOMContentLoaded', function() {
-            // Loading screen
-            const loadingScreen = document.getElementById('loadingScreen');
-            
-            // Hide loading screen after 2 seconds
-            setTimeout(() => {
-                loadingScreen.classList.add('hidden');
-            }, 2000);
-            
-            // Create floating hearts
-            createFloatingHearts();
-            
-            // Initialize scroll animations
-            initScrollAnimations();
-            
-            // Initialize navigation
-            initNavigation();
-        });
+        // Particle System
+        const canvas = document.getElementById('particle-canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
         
-        // Create floating hearts
-        function createFloatingHearts() {
-            const container = document.getElementById('floatingHearts');
-            const heartCount = 8;
-            
-            for (let i = 0; i < heartCount; i++) {
-                const heart = document.createElement('div');
-                heart.classList.add('floating-heart');
-                heart.innerHTML = '<i class="fas fa-heart"></i>';
-                
-                // Random properties
-                const size = Math.random() * 1 + 0.8;
-                const left = Math.random() * 100;
-                const delay = Math.random() * 15;
-                const duration = Math.random() * 10 + 20;
-                
-                heart.style.fontSize = `${size}rem`;
-                heart.style.left = `${left}vw`;
-                heart.style.animationDelay = `${delay}s`;
-                heart.style.animationDuration = `${duration}s`;
-                
-                container.appendChild(heart);
+        let particles = [];
+        const particleCount = 150;
+        const colors = ['#ff0066', '#00ccff', '#ffcc00', '#6600ff', '#00ffcc'];
+        
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 3 + 1;
+                this.color = colors[Math.floor(Math.random() * colors.length)];
+                this.speedX = Math.random() * 1 - 0.5;
+                this.speedY = Math.random() * 1 - 0.5;
+                this.opacity = Math.random() * 0.5 + 0.1;
             }
-        }
-        
-        // Initialize scroll animations
-        function initScrollAnimations() {
-            const sections = document.querySelectorAll('.page-section');
-            const nav = document.getElementById('mainNav');
-            let lastScroll = 0;
             
-            // Check which section is in view
-            function checkScroll() {
-                const scrollPos = window.scrollY + 100;
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
                 
-                // Handle nav hide/show on scroll
-                const currentScroll = window.pageYOffset;
-                if (currentScroll > lastScroll && currentScroll > 300) {
-                    nav.classList.add('hidden');
-                } else {
-                    nav.classList.remove('hidden');
+                if (this.x > canvas.width) this.x = 0;
+                if (this.x < 0) this.x = canvas.width;
+                if (this.y > canvas.height) this.y = 0;
+                if (this.y < 0) this.y = canvas.height;
+                
+                // Mouse interaction
+                if (mouse.x !== undefined && mouse.y !== undefined) {
+                    const dx = mouse.x - this.x;
+                    const dy = mouse.y - this.y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+                    
+                    if (distance < 100) {
+                        this.speedX += dx * 0.001;
+                        this.speedY += dy * 0.001;
+                    }
                 }
-                lastScroll = currentScroll;
                 
-                // Check which section is active
-                sections.forEach(section => {
-                    const sectionTop = section.offsetTop;
-                    const sectionHeight = section.clientHeight;
-                    
-                    if (scrollPos >= sectionTop && scrollPos < sectionTop + sectionHeight) {
-                        section.classList.add('active');
-                        
-                        // Update nav link
-                        const id = section.getAttribute('id');
-                        const correspondingLink = document.querySelector(`.nav-link[href="#${id}"]`);
-                        
-                        if (correspondingLink) {
-                            document.querySelectorAll('.nav-link').forEach(link => {
-                                link.classList.remove('active');
-                            });
-                            correspondingLink.classList.add('active');
-                        }
-                    }
-                });
+                // Limit speed
+                const speed = Math.sqrt(this.speedX * this.speedX + this.speedY * this.speedY);
+                if (speed > 2) {
+                    this.speedX = (this.speedX / speed) * 2;
+                    this.speedY = (this.speedY / speed) * 2;
+                }
             }
             
-            // Initial check
-            checkScroll();
-            
-            // Listen for scroll
-            window.addEventListener('scroll', checkScroll);
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fillStyle = this.color;
+                ctx.globalAlpha = this.opacity;
+                ctx.fill();
+            }
         }
         
-        // Initialize navigation
-        function initNavigation() {
-            const navLinks = document.querySelectorAll('.nav-link');
+        function initParticles() {
+            particles = [];
+            for (let i = 0; i < particleCount; i++) {
+                particles.push(new Particle());
+            }
+        }
+        
+        function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
             
-            navLinks.forEach(link => {
-                link.addEventListener('click', function(e) {
-                    e.preventDefault();
+            // Draw connections
+            for (let i = 0; i < particles.length; i++) {
+                for (let j = i + 1; j < particles.length; j++) {
+                    const dx = particles[i].x - particles[j].x;
+                    const dy = particles[i].y - particles[j].y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
                     
-                    // Get target section
-                    const targetId = this.getAttribute('href');
-                    const targetSection = document.querySelector(targetId);
-                    
-                    if (targetSection) {
-                        // Update active nav link
-                        navLinks.forEach(link => link.classList.remove('active'));
-                        this.classList.add('active');
-                        
-                        // Smooth scroll to section
-                        window.scrollTo({
-                            top: targetSection.offsetTop - 80,
-                            behavior: 'smooth'
-                        });
+                    if (distance < 100) {
+                        ctx.beginPath();
+                        ctx.strokeStyle = particles[i].color;
+                        ctx.globalAlpha = 0.1 * (1 - distance / 100);
+                        ctx.lineWidth = 0.5;
+                        ctx.moveTo(particles[i].x, particles[i].y);
+                        ctx.lineTo(particles[j].x, particles[j].y);
+                        ctx.stroke();
                     }
-                });
+                }
+            }
+            
+            // Update and draw particles
+            particles.forEach(particle => {
+                particle.update();
+                particle.draw();
             });
             
-            // Hero button
-            const heroBtn = document.querySelector('.begin-btn');
-            if (heroBtn) {
-                heroBtn.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    
-                    const targetId = this.getAttribute('href');
-                    const targetSection = document.querySelector(targetId);
-                    
-                    if (targetSection) {
-                        window.scrollTo({
-                            top: targetSection.offsetTop - 80,
-                            behavior: 'smooth'
-                        });
-                    }
-                });
-            }
+            requestAnimationFrame(animateParticles);
         }
         
-        // Add parallax effect to background
-        window.addEventListener('mousemove', function(e) {
-            const x = e.clientX / window.innerWidth;
-            const y = e.clientY / window.innerHeight;
+        // Mouse interaction
+        let mouse = {};
+        document.addEventListener('mousemove', (e) => {
+            mouse.x = e.x;
+            mouse.y = e.y;
+        });
+        
+        // Text block animation on scroll
+        function animateTextBlocks() {
+            const textBlocks = document.querySelectorAll('.text-block');
+            const windowHeight = window.innerHeight;
             
-            document.body.style.backgroundImage = 
-                `radial-gradient(ellipse at ${x * 100}% ${y * 100}%, rgba(120, 90, 216, 0.07) 0%, transparent 40%),
-                 radial-gradient(ellipse at ${100 - x * 100}% ${100 - y * 100}%, rgba(216, 122, 149, 0.07) 0%, transparent 40%)`;
+            textBlocks.forEach(block => {
+                const blockTop = block.getBoundingClientRect().top;
+                if (blockTop < windowHeight - 100) {
+                    block.classList.add('visible');
+                }
+            });
+        }
+        
+        // Typewriter effect for first block
+        function typeWriterEffect() {
+            const block1 = document.getElementById('block1');
+            const text = block1.textContent;
+            block1.textContent = '';
+            
+            let i = 0;
+            function type() {
+                if (i < text.length) {
+                    block1.textContent += text.charAt(i);
+                    i++;
+                    setTimeout(type, 30);
+                }
+            }
+            
+            // Start typing after a delay
+            setTimeout(type, 1000);
+        }
+        
+        // Initialize everything
+        window.addEventListener('load', () => {
+            initParticles();
+            animateParticles();
+            animateTextBlocks();
+            typeWriterEffect();
+            
+            // Animate text blocks sequentially
+            const textBlocks = document.querySelectorAll('.text-block');
+            textBlocks.forEach((block, index) => {
+                if (index > 0) {
+                    setTimeout(() => {
+                        block.classList.add('visible');
+                    }, 2000 + (index * 300));
+                }
+            });
+            
+            // Mouse trail effect
+            document.addEventListener('mousemove', (e) => {
+                // Create a small particle at mouse position occasionally
+                if (Math.random() > 0.7) {
+                    const trailParticle = new Particle();
+                    trailParticle.x = e.x;
+                    trailParticle.y = e.y;
+                    trailParticle.size = Math.random() * 2 + 1;
+                    trailParticle.opacity = 0.3;
+                    particles.push(trailParticle);
+                    
+                    // Limit particles array size
+                    if (particles.length > 200) {
+                        particles.shift();
+                    }
+                }
+            });
+        });
+        
+        window.addEventListener('scroll', animateTextBlocks);
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+        
+        // Interactive heart click
+        document.querySelector('.heartbeat').addEventListener('click', function() {
+            this.style.color = '#ffcc00';
+            setTimeout(() => {
+                this.style.color = '#ff0066';
+            }, 500);
+            
+            // Create heart explosion
+            for (let i = 0; i < 20; i++) {
+                const heart = document.createElement('div');
+                heart.innerHTML = '<i class="fas fa-heart"></i>';
+                heart.style.position = 'fixed';
+                heart.style.left = this.getBoundingClientRect().left + 'px';
+                heart.style.top = this.getBoundingClientRect().top + 'px';
+                heart.style.color = colors[Math.floor(Math.random() * colors.length)];
+                heart.style.fontSize = Math.random() * 20 + 10 + 'px';
+                heart.style.zIndex = '1000';
+                heart.style.pointerEvents = 'none';
+                
+                document.body.appendChild(heart);
+                
+                // Animate heart
+                const angle = Math.random() * Math.PI * 2;
+                const speed = Math.random() * 5 + 2;
+                const duration = Math.random() * 1000 + 500;
+                
+                let startX = this.getBoundingClientRect().left;
+                let startY = this.getBoundingClientRect().top;
+                let startTime = Date.now();
+                
+                function animateHeart() {
+                    const elapsed = Date.now() - startTime;
+                    const progress = elapsed / duration;
+                    
+                    if (progress < 1) {
+                        heart.style.left = (startX + Math.cos(angle) * speed * elapsed * 0.1) + 'px';
+                        heart.style.top = (startY + Math.sin(angle) * speed * elapsed * 0.1 - 0.5 * 9.8 * elapsed * 0.001 * elapsed * 0.001) + 'px';
+                        heart.style.opacity = 1 - progress;
+                        requestAnimationFrame(animateHeart);
+                    } else {
+                        document.body.removeChild(heart);
+                    }
+                }
+                
+                animateHeart();
+            }
         });
     </script>
 </body>
